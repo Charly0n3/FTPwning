@@ -2,7 +2,7 @@
 #Autor -> Charly0n3
 #Fecha -> 03/02/2023
 #Descripción -> Herramienta para capturar credenciales de usuarios ftp, usando tshark.
-#No funciona si el servicio ftp ha sido encapsulado con algún sistema de cifrado ya que este programa se aprovecha de que la conversación de credenciales no viaja cifrada.
+#Este script funciona con un servidor ftp básico con ninguna 
 
 # Colores
 
@@ -15,7 +15,7 @@ turquesa="\e[0;36m\033[1m"
 gray="\e[0;37m\033[1m"
 end="\033[0m\e[0m"
 
-# Dependencias
+# Dependencias, recorre un array que contiene las dependencias necesarias y las va instalando una a una en caso de no tenerlas en el sistema
 
 dependencias(){
 
@@ -40,7 +40,7 @@ done
 clear
 }
 
-# Sniffer
+# Sniffer, en esta función realizamos el escaneo, el usuario le puede indicar cuantos minutos quiere que dure el escaneo y la interfaz a utilizar.
 
 sniffer(){
 
@@ -57,6 +57,10 @@ echo
 echo -e "${turquesa}[*]${end} Escaneando durante [ ${green}$time${end} segundos ] [ Por la interfaz ${green}$iface${end} ] ${turquesa}[*]${end}"
 echo
 	sudo tshark -i $iface -a duration:$time &> /dev/null > log.txt
+	
+# El escaneo se guarda en un log que luego es leido por un bucle while read, en el que estamos aplicando condicionales con expresiones regulares para 
+# Filtrar por PASS y USER, casualmente sus respectivos valores vienen siempre al final de la línea por lo que se puede filtrar la última palabra con NF de awk.
+	
 while read line; do
 
 	if [[ $line == *"USER"* ]]; then
@@ -87,7 +91,9 @@ rm log.txt
 
 
 
-# Main
+# Main, en este condicional comprobamos si el script se está ejecutando como root, en caso de ser root empieza invocando la función dependencias.
+# Seguidamente inicia un bucle while que controla que el usuario use la opción 3 para salir y dentro añadimos un case para que el usuario elija las distintas opciones
+# En la opción dos llamamos a la función sniffer.
 
 if [ $(id -u) -eq 0 ]; then
 
