@@ -136,7 +136,7 @@ while [ $opt -ne 3 ]; do
 
 		2) clear # Empezar escaneo
 			clear
-			toilet --font mono12 --filter border:metal --termwidth 'FTPwned' 2> /dev/null
+			toilet --font mono12 --filter border:metal --termwidth 'FTPwning' 2> /dev/null
 			sniffer
 		;;
 
