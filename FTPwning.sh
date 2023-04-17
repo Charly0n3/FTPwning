@@ -2,7 +2,7 @@
 #Autor -> Charly0n3
 #Fecha -> 03/02/2023
 #Descripción -> Herramienta para capturar credenciales de usuarios ftp, usando tshark.
-#Este script funciona con un servidor ftp básico con ninguna 
+#Este script funciona con un servidor ftp básico sin ninguna medida de seguridad.
 
 # Colores
 
@@ -17,7 +17,7 @@ end="\033[0m\e[0m"
 
 # Dependencias, recorre un array que contiene las dependencias necesarias y las va instalando una a una en caso de no tenerlas en el sistema
 
-dependencias(){
+function dependencias(){
 
 dep=(toilet tshark)
 
@@ -42,7 +42,7 @@ clear
 
 # Sniffer, en esta función realizamos el escaneo, el usuario le puede indicar cuantos minutos quiere que dure el escaneo y la interfaz a utilizar.
 
-sniffer(){
+function sniffer(){
 
 interface=$(ip a | grep "state UP" | awk '{print $2}' | sed 's/.$//')
 
